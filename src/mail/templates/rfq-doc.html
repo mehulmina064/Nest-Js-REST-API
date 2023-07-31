@@ -1,0 +1,24 @@
+<html>
+ <head>
+     <body>
+         <h4>We have recieved an RFQ from <%= formData.name %> from <%= formData.organization %>. Here are the details.</h4>
+        <h4>Company Name :<%= formData.organization %></h4>
+        <h4>Name :<%= formData.name %></h4>
+        <h4>Email :<%= formData.email %></h4>
+        <h4>Phone Number :<%= formData.number %></h4>
+        <% for(var i=0; i < doc.attachments.length; i++) { %>       
+        <h4>File :<a href="https://api.prodo.in/<%= doc.attachments[i].fileUrl %>">Download <%= doc.attachments[i].name %></a></h4>
+        <% } %>
+        <h4>Address:<%= formData.address %></h4>
+        <h4>City:<%= formData.city %></h4>
+        <% for(var i=0; i < formData.line_items.length; i++) { %>
+        <h4>Product Details:<%= formData.line_items[i].productDetails %></h4>
+        <h4>Quantity:<%= formData.line_items[i].quantity %></h4>
+
+        %>
+     </body>
+ </head>
+ <footer>
+
+ </footer>
+</html>

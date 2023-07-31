@@ -1,0 +1,10 @@
+{
+  "language": "ts",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "assets": [{"include":"mail/templates//*","outDir":"dist/src" }],
+    "watchAssets": true,
+    "plugins": ["@nestjs/swagger/plugin"]
+  }
+}

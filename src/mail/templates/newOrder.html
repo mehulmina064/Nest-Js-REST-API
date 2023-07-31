@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            table, th, td {
+            border: 1px solid black;
+            }
+        </style>
+        <body>
+            <h3>Hello <%= name %></h3>
+            <p>Your procurement journey with Prodo has started! And we're just as excited as you are.</p>
+            <p>Here's your order summary:</p>
+            <div>
+                <table >
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                    </tr>
+                    <% for(var i=0; i < products.length; i++) { %>
+                        <tr>
+                          <td><%= products[i].productName %></td>
+                          <td><%= products[i].quantity %></td>
+                        </tr>
+                     <% } %>
+                </table>
+            </div>
+            <p>ORDER NO: <%= orderNumber %></p>
+            <p>Date: <%= date %></p>
+            <p>Shipping: <%= shippingAdress.addressLine1 %>, <%=shippingAdress.addressLine2  %>, <%=shippingAdress.city  %>, <%=shippingAdress.state  %>, <%=shippingAdress.country  %>, <%=shippingAdress.zipCode %></p>
+            <p>Total: <%= total %></p>
+            <a href="<%= shopMoreUrl %>">
+                <button >SHOPE MORE</button>
+            </a>
+        </body>
+    </head>
+</html>
