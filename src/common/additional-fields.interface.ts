@@ -34,59 +34,45 @@ export enum fieldType {
     editorTinyMce4 = 'editorTinyMce4',
 }
 
-export class AdditionalFields{
+export class AdditionalFields {
 
     @ApiModelProperty()
-    @Column()
     fieldName: string;
-
+  
     @ApiModelProperty()
-    @Column()
     fieldValue: string;
-
+  
     @ApiModelProperty()
-    @Column({ type: 'enum', enum: fieldType, default: fieldType.text })
-    fieldType: fieldType;
-
+    fieldType: FieldType;
+  
     @ApiModelProperty()
-    @Column()
     fieldOptions: string;
-
+  
     @ApiModelProperty()
-    @Column()
     fieldRequired: boolean;
-
+  
     @ApiModelProperty()
-    @Column()
     fieldOrder: number;
-
+  
     @ApiModelProperty()
-    @Column()
     fieldGroup: string;
-
+  
     @ApiModelProperty()
-    @Column()
     fieldGroupOrder: number;
-
+  
     @ApiModelProperty()
-    @Column()
     fieldGroupName: string;
-
-}
-
-export class AdditionalFieldsGroup {
+  }
+  
+  export class AdditionalFieldsGroup {
+      
+    @ApiModelProperty()
+    groupName: string;
     
-        @ApiModelProperty()
-        @Column()
-        groupName: string;
-    
-        @ApiModelProperty()
-        @Column()
-        groupOrder: number;
-
-        @ApiModelProperty()
-        @Column()
-        groupFields: AdditionalFields[];
-    
-    }
+    @ApiModelProperty()
+    groupOrder: number;
+  
+    @ApiModelProperty()
+    groupFields: AdditionalFields[];
+  }
     

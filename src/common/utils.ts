@@ -3,7 +3,7 @@ import { Organization } from './../organization/organization.entity';
 import { UserRole } from './../users/roles.constants';
 export async function filterSingleObject(obj:any, user:any) {
 
-    if(user.roles){if (user.roles.includes(UserRole.PRODO)) {
+    if(user.roles){if (user.roles.includes(UserRole.BEASTAB)) {
         return obj
     }
     if (user.roles.includes(UserRole.ADMIN) && obj.organization_id == user.organization_id) {
@@ -19,7 +19,7 @@ export async function filterAllData(service:any, user:any) {
     if(user){
         const organization_id:ObjectID = user.organization_id;
         const user_id:ObjectID = user.id;
-    if(user.roles){if(user.roles.includes(UserRole.PRODO)){
+    if(user.roles){if(user.roles.includes(UserRole.BEASTAB)){
         return await service.findAll();
     }
     if(user.roles.includes(UserRole.ADMIN)){
@@ -55,11 +55,6 @@ export async function generateSerialNumberUnimove(entity:any, org_id:String) {
         },
         order: {serial: "DESC"}});
     if(last_serial){
-//         Serial Number: 5-digits (Starting from 000001)
-// For example Buy Order for  Bag: BUY/PCGGNRDX/2223/B00001
-// For example Buy Order for Seal: BUY/PCGGNRD/2223/S00001
-// For example Return Order for Bag: RET/PCGGNRDX/2223/B00001
-// For example Return Order for Seal: RET/PCGGNRDX/2223/S00001
 
 let serial_number = last_serial.serialNumber;
 let serial_number_array = serial_number.split("/");

@@ -6,7 +6,6 @@ import { BaseAppEntity } from '../common/common.entity';
 export enum OrganizationType {
     // Organization Type
     LOGISTICS = 'LOGISTICS',
-    PRODO = 'PRODO',
     SUPPLIER = 'SUPPLIER',
     CLIENT = 'CLIENT',
     VENDOR = 'VENDOR',
@@ -15,7 +14,6 @@ export enum OrganizationType {
 
 export enum OrganizationDomain {
     // Organization Roles
-    PRODO = 'PRODO',
     MANUFACTURER = 'MANUFACTURER',
     DISTRIBUTOR = 'DISTRIBUTOR',
     SUPPLIER = 'SUPPLIER',

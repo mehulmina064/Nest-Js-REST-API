@@ -1,5 +1,4 @@
 import { Organization } from './organization.entity';
-// import { Controller,Get,Post,Patch, Body, Param, Query, UseGuards,Request } from "@nestjs/common";
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Request, UploadedFile, UseGuards, UseInterceptors,Res,HttpStatus, HttpException } from '@nestjs/common';
 
 import { OrganizationService } from "./organization.service";

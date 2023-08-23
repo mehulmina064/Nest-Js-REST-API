@@ -3,8 +3,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectID, Repository } from 'typeorm';
 import { Organization } from './organization.entity';
-import { companyService } from './../company/company.service';
-import { entitiesService } from "./../entities/entities.service";
 import { getRepository, getTreeRepository, MongoRepository } from 'typeorm';
 import { OrganizationDomain, OrganizationType,OrganizationStatus } from '../organization/organization.entity';
 import { of } from 'rxjs';
@@ -19,8 +17,6 @@ export class OrganizationService {
     constructor(
         @InjectRepository(Organization)
         private readonly organizationRepository: Repository<Organization>,
-        private readonly companyService: companyService,
-        private readonly entitiesService: entitiesService
     ) { }
 
     async findAll(): Promise<Organization[]> {

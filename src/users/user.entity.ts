@@ -10,7 +10,7 @@ export enum UserStatus {
   DELETED = 'DELETED',
 }
 export enum UserType {
-  PRODO = 'PRODO',
+  BEASTAB = 'BEASTAB',
   ZOHO = 'ZOHO'
 }
 
@@ -116,7 +116,7 @@ export class User extends OrganizationModel {
   @Column({
       type: 'enum',
       enum: UserType,
-      default: UserType.PRODO,
+      default: UserType.BEASTAB,
   })
   userType: UserType | undefined;
 
