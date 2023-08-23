@@ -1,7 +1,7 @@
 // Create Nest JS Service for Organization Entity ./../organization/organization.entity.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectID, Repository } from 'typeorm';
+import { ObjectId, Repository } from 'typeorm';
 import { Organization } from './organization.entity';
 import { getRepository, getTreeRepository, MongoRepository } from 'typeorm';
 import { OrganizationDomain, OrganizationType,OrganizationStatus } from '../organization/organization.entity';
@@ -10,7 +10,7 @@ import {HttpException,HttpStatus } from '@nestjs/common';
 
 
 
-var ObjectId = require('mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectId;
 
 Injectable()
 export class OrganizationService {
@@ -35,7 +35,7 @@ export class OrganizationService {
         return await this.organizationRepository.update(id, organization);
     }
 
-    async remove(id: ObjectID | undefined) {
+    async remove(id: ObjectId | undefined) {
         const organization = this.organizationRepository.findOne(id).then(result => {
             this.organizationRepository.delete(result);
         });
