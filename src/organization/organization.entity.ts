@@ -1,6 +1,6 @@
 // nest typeorm entity for organization for multi account
 
-import { Column, Entity, ObjectID, ObjectIdColumn, Unique } from 'typeorm';
+import { Column, Entity, ObjectId, ObjectIdColumn, Unique } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { BaseAppEntity } from '../common/common.entity';
 export enum OrganizationType {
@@ -42,7 +42,7 @@ export enum OrganizationStatus {
 export class Organization extends BaseAppEntity {
     @ApiModelProperty()
     @ObjectIdColumn()
-    id: ObjectID;
+    id: ObjectId;
 
     @ApiModelProperty()
     @Column()

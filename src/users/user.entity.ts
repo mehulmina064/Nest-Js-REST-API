@@ -1,5 +1,5 @@
 import { BaseAppEntity } from './../common/common.entity';
-import { Column, Entity, ObjectID, ObjectIdColumn, Unique } from 'typeorm';
+import { Column, Entity, ObjectId, ObjectIdColumn, Unique } from 'typeorm';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import {OrganizationModel} from './../common/org-model.entity';
 import { UserRole } from './roles.constants';
@@ -19,7 +19,7 @@ export class User extends OrganizationModel {
  
   @ApiModelProperty()
   @ObjectIdColumn()
-  id: ObjectID | undefined;
+  id: ObjectId | undefined;
 
   @ApiModelProperty()
   @Column()
@@ -122,7 +122,7 @@ export class User extends OrganizationModel {
 
   @ApiModelPropertyOptional()
   @Column()
-  accountId: ObjectID | undefined;
+  accountId: ObjectId | undefined;
 
   @ApiModelProperty()
   @Column()

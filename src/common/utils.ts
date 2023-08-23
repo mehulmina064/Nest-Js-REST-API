@@ -1,4 +1,4 @@
-import { ObjectID, Entity, getRepository } from 'typeorm';
+import { ObjectId, Entity, getRepository } from 'typeorm';
 import { Organization } from './../organization/organization.entity';
 import { UserRole } from './../users/roles.constants';
 export async function filterSingleObject(obj:any, user:any) {
@@ -17,8 +17,8 @@ export async function filterSingleObject(obj:any, user:any) {
 export async function filterAllData(service:any, user:any) {
 
     if(user){
-        const organization_id:ObjectID = user.organization_id;
-        const user_id:ObjectID = user.id;
+        const organization_id:ObjectId = user.organization_id;
+        const user_id:ObjectId = user.id;
     if(user.roles){if(user.roles.includes(UserRole.BEASTAB)){
         return await service.findAll();
     }
