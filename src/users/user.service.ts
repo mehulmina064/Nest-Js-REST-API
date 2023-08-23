@@ -1,7 +1,7 @@
 import { OrganizationType, OrganizationDomain, OrganizationStatus } from './../organization/organization.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectID, Repository, FindManyOptions, getRepository } from 'typeorm';
+import { ObjectId, Repository, FindManyOptions, getRepository } from 'typeorm';
 import { User, UserStatus, UserType } from './user.entity';
 import { Permission, UserRole } from '../users/roles.constants';
 import * as CryptoJS from 'crypto-js';
@@ -16,7 +16,6 @@ import {HttpException,HttpStatus } from '@nestjs/common';
 const http = require("https");
 import { callbackPromise } from 'nodemailer/lib/shared';
 import { OrganizationService } from './../organization/organization.service';
-var ObjectId = require('mongodb').ObjectID;
 
 
 // import { Response } from 'express';
@@ -38,7 +37,7 @@ export class UserService {
   }
 
   async findAll(filter: FindManyOptions<User> | undefined): Promise<User[]> {
-    // Convert String into ObjectID Object
+    // Convert String into ObjectId Object
     if(filter){
       console.log("filter exists")
       return await this.userRepository.find(filter);
@@ -81,41 +80,14 @@ export class UserService {
     return await this.userRepository.find(filter);
   }
 
-  async remove(id: ObjectID) {
+  async remove(id: ObjectId) {
     const order = await this.userRepository.findOne(id);
-    await this.deleteZohoUser(order);
-    await this.dashboardDataDelete(id);
     await this.userRepository.delete(id);
     return order;
   }
-  async dashboardDataDelete(id: ObjectID) {
-    let res=await this.dashboardDataRepository.findOne({userId:id}) 
-    if(res){
-      await this.dashboardDataRepository.delete(res);
-    }
-    else{
-      return true;
-    }
 
-  }
 
-  async generateOtp(contactNumber: string) {
-    const otp = await OTP.generate(6, { upperCase: false, specialChars: false, alphabets: false });
-    await this.otpRepository.save({ contactNumber, otp });
-    return { otp };
-  }
-
-  async generatePassword() {
-    let pass = await OTP.generate(8, { upperCase: false, specialChars: false, alphabets: true });
-    return pass;
-  }
-
-  async verifyOtp(contactNumber: any, otp: any) {
-    const checkOtp = await this.otpRepository.findOne({ contactNumber, otp });
-    return !!checkOtp;
-  }
-
-  async assignRoles(id: ObjectID, roles: UserRole[]) {
+  async assignRoles(id: ObjectId, roles: UserRole[]) {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new Error('User not found');
@@ -161,88 +133,23 @@ export class UserService {
     var saveUser = await this.userRepository.save(user);
     var userName = saveUser.firstName +' '+ saveUser.lastName;
     account.email=user.email;
-    var saveAccount = await this.accountRepository.save(account);
     var saveOrganization = await this.organizationRepository.save(organization);
-    saveUser.accountId = saveAccount.id;
     saveUser.organization_id = String(saveOrganization.id);
-    saveOrganization.account_id = saveAccount.id;
     saveOrganization.customerId=String(saveOrganization.id)
     saveOrganization.companyIds=[]
     saveOrganization.entityIds=[]
     saveOrganization.status=OrganizationStatus.ACTIVE
     //is
-    let zohouser=await this.zohoWebUserUpload(saveUser);
-    console.log("zohouser",zohouser);
     saveUser.status=UserStatus.ACTIVE
-    // saveUser.orgRole="ORG_ADMIN"
-    // saveUser.orgIds.push(saveUser.organization_id)
-    await this.updateData(saveUser)
     await this.userRepository.save(saveUser);
     await this.organizationRepository.save(saveOrganization);
-    // sendSms
-    let SMS = {
-      flow_id:"62c2c6b528e92365c24410b5",
-      sender:"mPRODO",
-      short_url: "1 (On) or 0 (Off)",
-      mobile:"+91",
-      name:""
-      authkey:"366411AamHKyDckoqf6129d4c4P1"
-    };
-    SMS.mobile=SMS.mobile+user.contactNumber
-    SMS.name=SMS.name+user.firstName
 
-    const SmsOptions = {
-      "method": "POST",
-      "hostname": "api.msg91.com",
-      "port": null,
-      "path": "/api/v5/flow/",
-      "headers": {
-        "authkey": "366411AamHKyDckoqf6129d4c4P1",
-        "content-type": "application/JSON"
-      }
-    };
-    let data
-    const rep = await http.request(SmsOptions, function (res) {
-      const chunks = [];
-    
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
-      });
-    
-      res.on("end", function () {
-        const body = Buffer.concat(chunks);
-        // console.log(body.toString());
-        data= body.toString();
-        data=JSON.parse(data)
-        console.log(data) 
-
-      });
-    });
-    rep.write(`{\n  \"flow_id\": \"62c2c6b528e92365c24410b5\",\n  \"sender\": \"mPRODO\",\n  \"short_url\": \"1 (On) or 0 (Off)\",\n  \"mobiles\": \"${SMS.mobile}\",\n  \"VAR1\": \"VALUE 1\",\n  \"VAR2\": \"VALUE 2\",\n  \"NAME\":\"${SMS.name}\"\n}`);
-    // rep.write(`${super1}`)
-     data = {
-      type: 'success',
-      message: "Message sent successfully" 
-    };
-    console.log(data) 
-    rep.end();
-    let mailOptions = {
-      TriggerName: 'NewUser',
-      doc: saveUser,
-      templatevars:{
-            user: saveUser,
-            account: saveAccount,
-            organization: saveOrganization
-          },
-    }
-    await this.mailTriggerService.SendMail(mailOptions);
        return {
          "user" : saveUser,
-         "account" : saveAccount,
          "organization" :saveOrganization};
      }
 
-  async update(id: string | number | Date | ObjectID | FindConditions<User> | string[] | number[] | Date[] | ObjectID[], user: Partial<User>) {
+  async update(id: string | number | Date | ObjectId  | string[] | number[] | Date[] | ObjectId[], user: Partial<User>) {
     if (user.roles && user.roles.length > 0) {
       throw new HttpException({
         status: 400,
@@ -252,12 +159,10 @@ export class UserService {
     }
     let data= await this.userRepository.update(id, user);
     let saveUser=await this.userRepository.findOne(id);
-    let zohouser=await this.zohoWebUserUpload(saveUser);
-    console.log("zohouser",zohouser);
     return data;
   }
 
-  async updatePassword(id: string | number | Date | ObjectID | FindConditions<User> | string[] | number[] | Date[] | ObjectID[] | undefined, user: any) {
+  async updatePassword(id: string | number | Date | ObjectId | string[] | number[] | Date[] | ObjectId[] | undefined, user: any) {
     user.currentPassword = CryptoJS.HmacSHA1(user.currentPassword, 'jojo').toString();
     console.log(user);
     const foundUser = await this.userRepository.findOne(id);
@@ -299,135 +204,8 @@ export class UserService {
     }
       
   }
-  // async forgotPassword(email: string,mobile:string) {
-  async forgotPassword(email: string) {
-    let mobile=email;
-    const criteria = (email.indexOf('@') === -1) ? ( email="" ) : ( email=email );
-    // const foundUser = await this.userRepository.findOne(criteria)
-    console.log('email',email);
-    console.log('mobile',mobile);
-    if(email==""){
-      const foundUser = await this.userRepository.findOne({ contactNumber: mobile });
-      console.log('foundUser-by number',foundUser);
-      if (foundUser) {
-        let SMS = {
-          authkey:'366411AamHKyDckoqf6129d4c4P1',
-          template_id:'62c2c993686eff1b09630536',
-          mobile:'91'
-        };
-        SMS.mobile=SMS.mobile+mobile
-        let SmsOptions = {
-      
-          path:`https://api.msg91.com/api/v5/otp?template_id=${SMS.template_id}&mobile=${SMS.mobile}&authkey=${SMS.authkey}`,
-        };
-        console.log('body',SmsOptions.path)
-        let res = await fetch(SmsOptions.path)
-        res=await res.text()
-        res=JSON.parse(res)
-        console.log('res',res)
-        if(res.type==="error"){
-          throw new HttpException({
-            status: 400,
-            error: "Bad Request", 
-            message: res.message
-          }, HttpStatus.FORBIDDEN);
-        }
-        else{
-          throw new HttpException({
-            status: 200,
-            type: 'success',
-            message: "OTP sent successfully"
-          }, HttpStatus.OK);
-        }
-    }
-    else {
-      return { status: 'failure', message: 'User not found' };
-    }
-  }
-    else {
-         const foundUser = await this.userRepository.findOne({ email: email });
-         console.log('foundUser',foundUser);
-         if (foundUser) {
-           const otp = await OTP.generate(6, { upperCase: false, specialChars: false, alphabets: false });
-           await this.otpRepository.save({ email: foundUser.email, otp });
-           let MailOptions = {
-              TriggerName: 'ForgotPassword',
-              doc: foundUser,
-              templatevars:{
-                    user: foundUser,
-                    otp: otp,
-                  },
-                }
-            await this.mailTriggerService.SendMail(MailOptions);
-           return { status: 'success', message: 'OTP sent to your registered email' };
-         } else {
-           return { status: 'failure', message: 'User not found' };
-         }
-    }
-  }
-  // async resetPassword(email: string, otp: string, password: string, mobile: string) {
-  async resetPassword(email: string, otp: string, password: string) {
-    let mobile=email;
-    const criteria = (email.indexOf('@') === -1) ? ( email="" ) : ( email=email );
-    // const foundUser = await this.userRepository.findOne(criteria)
-    console.log('email',email);
-    console.log('mobile',mobile);
-    if(email==""){
-      const foundUser = await this.userRepository.findOne({ contactNumber: mobile });
-      // console.log('foundUser',foundUser);
-      if (foundUser) {
-        let SMS = {
-          authkey:'366411AamHKyDckoqf6129d4c4P1',
-          otp:'',
-          mobile:'91'
-        };
-        SMS.mobile=SMS.mobile+mobile
-        SMS.otp=otp
-        let SmsOptions = {
-          path:`https://api.msg91.com/api/v5/otp/verify?otp=${SMS.otp}&authkey=${SMS.authkey}&mobile=${SMS.mobile}`,
-        };
-        console.log('sms',SmsOptions)
-        let res = await fetch(SmsOptions.path)
-        res=await res.text()
-        res=JSON.parse(res)
-        res.status=res.status
-        if(res.type==="error"){
-          throw new HttpException({
-            status: 404,
-            error: res.error,
-            message: res.message
-          }, HttpStatus.FORBIDDEN);
-        }
-        else{
-          foundUser.password = CryptoJS.HmacSHA1(password, 'jojo').toString();
-          await this.userRepository.save(foundUser);
-          return { status: 'success', message: 'Password reset successfully' };
-        }
-      }
-      else {
-        return { status: 'failure', message: 'User not found' };
-      }
 
-    }
-    else{
-           const foundUser = await this.userRepository.findOne({ email: email });
-           if (foundUser) {
-             const checkOtp = await this.otpRepository.findOne({ email: foundUser.email, otp: otp });
-             console.log('checkOtp',checkOtp);
-             if (checkOtp) {
-               await this.otpRepository.remove(checkOtp);
-               foundUser.password = CryptoJS.HmacSHA1(password, 'jojo').toString();
-               await this.userRepository.save(foundUser);
-               return { status: 'success', message: 'Password reset successfully' };
-             } else {
-               return { status: 'failure', message: 'OTP do not match' };
-             }
-           } else {
-             return { status: 'failure', message: 'User not found' };
-           }
-     }
-  }  
- 
+
 
   async updateOrganizationDomains() {
     let organizations = await this.organizationRepository.find({where: {domain: {$exists: false}}});
@@ -459,8 +237,7 @@ export class UserService {
     user.organization_id = organizationId;
     const organization = await this.organizationRepository.findOne(organizationId);
     user.accountId = adminUser.accountId;
-    let account = await this.accountRepository.findOne(adminUser.accountId);
-    let password= await this.generatePassword();
+    let password= "hello";
     console.log('-----------password----',password);
     user.password = CryptoJS.HmacSHA1(password, 'jojo').toString();
     user.createdBy = String(adminUser.id);
@@ -469,7 +246,6 @@ export class UserService {
     user.roles = [...user.roles, UserRole.USER];
     console.log('roles',user.roles);
     const newuser = await this.userRepository.save(user);
-    let zohouser=await this.zohoWebUserUpload(user);
     console.log("zohouser",user);
     newuser.password=password;
     let mailOptions = {
@@ -478,10 +254,8 @@ export class UserService {
       templatevars: {
         user: newuser,
         organization: organization,
-        account: account,
       }
     }
-    await this.mailTriggerService.SendMail(mailOptions);
     return { status: 'success', message: 'User added successfully', user: newuser };
   }
 
