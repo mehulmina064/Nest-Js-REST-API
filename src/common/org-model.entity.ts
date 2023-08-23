@@ -1,5 +1,5 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { Column, ObjectID } from "typeorm";
+import { Column, ObjectId } from "typeorm";
 import { BaseAppEntity } from "./base-app.entity";
 
 export class OrganizationModel extends BaseAppEntity {

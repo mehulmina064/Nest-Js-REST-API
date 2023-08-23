@@ -2,7 +2,7 @@ import { User } from './../users/user.entity';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Request, UploadedFile, UseGuards, UseInterceptors,Res,HttpStatus, HttpException } from '@nestjs/common';
 import { JwtAuthGuard } from '../authentication/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectID, Repository, FindManyOptions, getRepository } from 'typeorm';
+import { Repository, FindManyOptions, getRepository } from 'typeorm';
 import * as fs from 'fs';
 var ejs = require('ejs');
 import * as path from 'path';

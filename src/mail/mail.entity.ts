@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn,ObjectID, Column, Index } from 'typeorm';
+import { Entity, ObjectIdColumn,ObjectId, Column, Index } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { OrganizationModel } from '../common/org-model.entity';
 
@@ -8,7 +8,7 @@ export class EmailTemplate extends OrganizationModel {
     
     @ApiModelProperty()
     @ObjectIdColumn()
-    id: ObjectID
+    id: ObjectId
     
     @ApiModelProperty()
     @Column()

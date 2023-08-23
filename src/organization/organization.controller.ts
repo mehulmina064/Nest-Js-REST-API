@@ -2,7 +2,6 @@ import { Organization } from './organization.entity';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Request, UploadedFile, UseGuards, UseInterceptors,Res,HttpStatus, HttpException } from '@nestjs/common';
 
 import { OrganizationService } from "./organization.service";
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { JwtAuthGuard } from '../authentication/jwt-auth.guard';

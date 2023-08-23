@@ -1,6 +1,5 @@
 import { AdditionalFields, AdditionalFieldsGroup } from './additional-fields.interface';
 import { ApiModelProperty } from "@nestjs/swagger";
-import { Attachment } from "../attachments/attachment.entity";
 import { Column, CreateDateColumn, Unique, UpdateDateColumn } from "typeorm";
 
 export class BaseAppEntity {
@@ -22,7 +21,7 @@ export class BaseAppEntity {
 
     @ApiModelProperty()
     @Column()
-    attachments: Attachment[];
+    attachments: String[];
 
 
     @ApiModelProperty()

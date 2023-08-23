@@ -3,9 +3,6 @@ import * as path from 'path';
 import {existsSync, readFileSync} from 'fs';
 import * as fs from 'fs';
 import {render} from 'ejs';
-import {juiceResources, inlineContent} from 'juice'
-import {htmlToText} from "html-to-text"
-import {HttpException,HttpStatus } from '@nestjs/common';
 
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({

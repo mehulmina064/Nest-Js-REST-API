@@ -1,21 +1,14 @@
-import { PassportModule } from '@nestjs/passport';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Request, UploadedFile, UseGuards, UseInterceptors,Res,HttpStatus, HttpException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { LocalAuthGuard } from '../authentication/local-auth.guard';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtAuthGuard } from '../authentication/jwt-auth.guard';
-import { CurrentUser} from './user.decorator';
 import { Organization, OrganizationDomain, OrganizationType } from '../organization/organization.entity';
 import { UserRole } from './roles.constants';
 import { Roles } from '../authentication/roles.decorator';
-import { ObjectID, getRepository } from 'typeorm';
 import { UserCreateDto } from './user.dto';
 import { filterAllData, filterSingleObject } from '../common/utils';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import * as CryptoJS from 'crypto-js';
 
 
 @Controller('users')
@@ -44,17 +37,6 @@ export class UserController {
     return await this.userService.findOne(req.user.id);
   }
 
-@Get('salesOrder-item-Delivery-Review/:package_id/:item_id')
-@UseGuards(JwtAuthGuard)
-async getReview(@Param('package_id') package_id: string,@Request() req,@Param('item_id') item_id: string) {
-    return await this.userService.getReview(item_id,req.user.id,package_id);
-}
-@Post('salesOrder-item-Delivery-Review')
-@UseGuards(JwtAuthGuard)
-async postReview(@Request() req: any,@Body() data: any) {
-    data.user_id = req.user.id;
-    return await this.userService.salesOrderReview(data);
-}
 
 @Post('setProfilePicture')
 @UseGuards(JwtAuthGuard)
