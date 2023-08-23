@@ -10,7 +10,7 @@ import { CurrentUser} from './user.decorator';
 import { Organization, OrganizationDomain, OrganizationType } from '../organization/organization.entity';
 import { UserRole } from './roles.constants';
 import { Roles } from '../authentication/roles.decorator';
-import { ObjectID, getRepository } from 'typeorm';
+import { ObjectId, getRepository } from 'typeorm';
 import { UserCreateDto } from './user.dto';
 import { filterAllData, filterSingleObject } from '../common/utils';
 import { FileInterceptor } from '@nestjs/platform-express';
