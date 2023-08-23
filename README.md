@@ -32,6 +32,9 @@
 
 ```bash
 $ npm install
+or
+$ npm install - force  //if getting version issues
+
 ```
 
 ## Running the app
