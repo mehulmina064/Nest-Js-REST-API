@@ -277,8 +277,8 @@ async newZohoBookToken(){
     },    
     body: new URLSearchParams({
         'refresh_token':'1000.da351bf4fa3f3e12efbc8d857136bdd4.935cf4a8f14bf3cafa77756340386482',//Mehul
-        'client_id':'1000.IX5LZETFZ78PTGVDPZSRT5PL6COE5H',
-        'client_secret':'a106415659f7c06d2406f446068c1739e81174c2b7',
+        'client_id':'1000.',
+        'client_secret':'',
         'grant_type': 'refresh_token' 
     })
 });
