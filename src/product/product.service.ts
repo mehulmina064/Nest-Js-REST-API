@@ -2307,10 +2307,7 @@ async zohoBookToken(){
       'Content-Type': 'application/x-www-form-urlencoded'
     },    
     body: new URLSearchParams({
-        'refresh_token':'1000.ed1558439de1a92a10ea765558341e0a.491937e36a45f1ec81808449305ed2fd',
-        'client_id':'1000.RSJXXGBXUBDSTFQP3MWRPB0V0W7JVO',
-        'client_secret':'3992ea3c6a7e219c3d4acfb9240ad3be1f595eff08',
-        'grant_type': 'refresh_token' 
+       
     })
 });
 zoho=await zoho.text()

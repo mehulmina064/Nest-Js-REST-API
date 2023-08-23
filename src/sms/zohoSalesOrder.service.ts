@@ -49,14 +49,7 @@ async newZohoBookTokenFarji(){
       'Content-Type': 'application/x-www-form-urlencoded'
     },    
     body: new URLSearchParams({
-        // 'refresh_token':'1000.2866f69cdb2027d6c27493990ed71a0e.e2111ac503bb18b8f3d83ba341140a50',
-        'refresh_token':'1000.da351bf4fa3f3e12efbc8d857136bdd4.935cf4a8f14bf3cafa77756340386482',
-        // 'client_id':'1000.HXRHTRPDNAVD7Y96GF96AECLE2A1MA',
-        'client_id':'1000.IX5LZETFZ78PTGVDPZSRT5PL6COE5H',
-        // 'client_secret':'babdacfca5c23a888ef95e0e18d5deb170c91b70a8',
-        'client_secret':'a106415659f7c06d2406f446068c1739e81174c2b7',
-
-        'grant_type': 'refresh_token' 
+  
     })
 });
 zoho=await zoho.text()

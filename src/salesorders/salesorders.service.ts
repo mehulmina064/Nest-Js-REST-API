@@ -750,12 +750,7 @@ async convert(array:any) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        // 'refresh_token':'1000.c236170cf7209060b3760ad60ba68035.5fd6722cf25268cb92f26e3417e3fd19',
-        refresh_token:
-          '1000.41b575ccee91f8a2c15d8e3c561d8927.6c2f7f1ed922c5420d299908aa4a3bc0',
-        client_id: '1000.5WGI1UXVKY2NCMULPREH62JMPIIPOZ',
-        client_secret: 'addada9d54cc2d40b6531c6f18e22ec73165990bfe',
-        grant_type: 'refresh_token',
+ 
       }),
     });
     zoho = await zoho.text();

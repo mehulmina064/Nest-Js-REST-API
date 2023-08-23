@@ -1035,16 +1035,7 @@ async zohoToken(){
       'Content-Type': 'application/x-www-form-urlencoded'
     },    
     body: new URLSearchParams({
-        // 'userName': 'test@gmail.com',
-        // 'password': 'Password!',
-        // 'grant_type': 'password'
-        // code-1000.b98ce22b00f8362714417a3b7ea290d8.c77c151e0b86d9ff5cc7e02cc67c7567
 
-        // 'refresh_token':'1000.a226e8c1856146a056a7847033102e7c.dda559cba2d6acf110a8670cd84d0c61',
-        'refresh_token':'1000.c236170cf7209060b3760ad60ba68035.5fd6722cf25268cb92f26e3417e3fd19',
-        'client_id':'1000.IX5LZETFZ78PTGVDPZSRT5PL6COE5H',
-        'client_secret':'a106415659f7c06d2406f446068c1739e81174c2b7',
-        'grant_type': 'refresh_token' 
     })
 });
 zoho=await zoho.text()
@@ -1548,10 +1539,7 @@ async zohoBookToken(){
       'Content-Type': 'application/x-www-form-urlencoded'
     },    
     body: new URLSearchParams({
-        'refresh_token':'1000.ed1558439de1a92a10ea765558341e0a.491937e36a45f1ec81808449305ed2fd',
-        'client_id':'1000.RSJXXGBXUBDSTFQP3MWRPB0V0W7JVO',
-        'client_secret':'3992ea3c6a7e219c3d4acfb9240ad3be1f595eff08',
-        'grant_type': 'refresh_token' 
+   
     })
 });
 zoho=await zoho.text()
@@ -3647,14 +3635,7 @@ async newZohoBookTokenFarji(){
       'Content-Type': 'application/x-www-form-urlencoded'
     },    
     body: new URLSearchParams({
-        // 'refresh_token':'1000.2866f69cdb2027d6c27493990ed71a0e.e2111ac503bb18b8f3d83ba341140a50',
-        'refresh_token':'1000.da351bf4fa3f3e12efbc8d857136bdd4.935cf4a8f14bf3cafa77756340386482',
-        // 'client_id':'1000.HXRHTRPDNAVD7Y96GF96AECLE2A1MA',
-        'client_id':'1000.IX5LZETFZ78PTGVDPZSRT5PL6COE5H',
-        // 'client_secret':'babdacfca5c23a888ef95e0e18d5deb170c91b70a8',
-        'client_secret':'a106415659f7c06d2406f446068c1739e81174c2b7',
-
-        'grant_type': 'refresh_token' 
+    
     })
 });
 zoho=await zoho.text()
@@ -4865,14 +4846,7 @@ return res1
         'Content-Type': 'application/x-www-form-urlencoded'
       },    
       body: new URLSearchParams({
-          // 'refresh_token':'1000.2866f69cdb2027d6c27493990ed71a0e.e2111ac503bb18b8f3d83ba341140a50',
-          'refresh_token':'1000.4465f9e1efe1561cb882ac213c5ab38a.33e74308926b912fc92bce7fabb1ad8b',
-          // 'client_id':'1000.HXRHTRPDNAVD7Y96GF96AECLE2A1MA',
-          'client_id':'1000.XR5O6504AUAILN3VEPYQYQR51LQ09F',
-          // 'client_secret':'babdacfca5c23a888ef95e0e18d5deb170c91b70a8',
-          'client_secret':'bb85cabde8bb17d1fa0c75dde4285f85788d219741',
-  
-          'grant_type': 'refresh_token' 
+        
       })
   });
   zoho=await zoho.text()

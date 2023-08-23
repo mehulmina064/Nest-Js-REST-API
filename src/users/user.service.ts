@@ -849,10 +849,7 @@ export class UserService {
         'Content-Type': 'application/x-www-form-urlencoded'
       },    
       body: new URLSearchParams({
-          'refresh_token':'1000.c236170cf7209060b3760ad60ba68035.5fd6722cf25268cb92f26e3417e3fd19',
-          'client_id':'1000.IX5LZETFZ78PTGVDPZSRT5PL6COE5H',
-          'client_secret':'a106415659f7c06d2406f446068c1739e81174c2b7',
-          'grant_type': 'refresh_token' 
+       
       })
   });
   zoho=await zoho.text()

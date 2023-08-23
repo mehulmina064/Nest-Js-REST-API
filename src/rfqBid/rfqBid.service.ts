@@ -311,10 +311,7 @@ export class rfqBidService {
             'Content-Type': 'application/x-www-form-urlencoded'
           },    
           body: new URLSearchParams({
-              'refresh_token':'1000.bba0cbaa752d5db9ce7ebaef7c36b08c.e9b334fe092cf9086374ca38ede24ab0',
-              'client_id':'1000.65CF5UIMCB6SZNQ1Z1TU1DA6VCDOZP',
-              'client_secret':'52a031a706f9b690694f135702ded10f7af1a44baf',
-              'grant_type': 'refresh_token' 
+          
           })
       });
       zoho=await zoho.text()
