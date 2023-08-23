@@ -66,6 +66,6 @@ $ mongorestore  --uri="mongodb://root:example@localhost:27017/" db/dump/
 
 ## MongoSH
 $ db.createUser({
- user:"prodo",
- pwd:"prodotest",
+ user:"beastab",
+ pwd:"beastab",
  roles:[{role: "userAdminAnyDatabase" , db:"admin"}]})
