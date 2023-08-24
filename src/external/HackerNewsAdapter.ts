@@ -1,7 +1,7 @@
 import { Injectable, HttpService, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { Observable, throwError,forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Item, User, ChangedItemsAndProfiles } from '../hackerNewsApiModule/hackerNewsApi.dto'; 
+import { Item, User, ChangedItemsAndProfiles } from '../hackerNewsApi/hackerNewsApi.dto'; 
 
 @Injectable()
 export class HackerNewsAdapter {

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe,CacheInterceptor, UseInterceptors,CacheTTL,CacheKey } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe,CacheInterceptor, UseInterceptors,CacheTTL,CacheKey,CACHE_MANAGER,Inject } from '@nestjs/common';
 import { HackerNewsAdapter } from '../external/HackerNewsAdapter';
 import { Observable } from 'rxjs';
 import { Item, User, ChangedItemsAndProfiles } from './hackerNewsApi.dto';
@@ -19,7 +19,8 @@ class GetUserParams {
 @Controller('hacker-api/')
 @UseInterceptors(CacheInterceptor)
 export class HackerApiController {
-  constructor(private readonly hackerNewsAdapter: HackerNewsAdapter) {}
+  constructor(private readonly hackerNewsAdapter: HackerNewsAdapter,
+     @Inject(CACHE_MANAGER) private readonly cacheManager ) {}
 
 
 
@@ -47,11 +48,13 @@ export class HackerApiController {
     return this.hackerNewsAdapter.getTopStories();
   }
 
-  // @Get('past-stories')
-  // async getPastStories(): Promise<Observable<any>> {
-  //   const key = 'top-stories'; // Use the same cache key as top-stories
-  //   return this.cacheManager.get(key); // Return cached data
-  // }
+  @Get('past-stories')
+  @CacheKey('top-stories')
+  @CacheTTL(900)
+  async getPastStories(): Promise<Observable<number[]>> {
+    const key = 'top-stories';
+    return this.cacheManager.get(key, { ttl: 900, max: 100 }); // Return cached data
+  }
 
   // @Get('comments/:id')
   // async getComments(@Param('id') id: number): Promise<Observable<any[]>> {

@@ -72,3 +72,14 @@ $ db.createUser({
  user:"beastab",
  pwd:"beastab",
  roles:[{role: "userAdminAnyDatabase" , db:"admin"}]})
+
+
+  
+
+  instructions
+  1:npm i --force
+  2:npm install tslib
+  than 
+  3:npm i cache-manage --force
+  4:npm run start:dev
+
