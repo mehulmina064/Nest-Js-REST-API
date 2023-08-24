@@ -1,5 +1,5 @@
 import { Injectable, HttpService, NotFoundException, InternalServerErrorException } from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError,forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Item, User, ChangedItemsAndProfiles } from '../hackerNewsApi/hackerNewsApi.dto'; 
 
@@ -49,6 +49,25 @@ export class HackerNewsAdapter {
       }),
     );
   }
+
+  //need to check
+  getItemsDirectApi(itemIds: number[]): Observable<Item[]> {
+    const itemUrls = itemIds.map(itemId => `${this.apiUrl}/item/${itemId}.json`);
+    return this.httpService.get(itemUrls.join(',')).pipe(
+        map(response => response.data),
+        catchError(error => {
+          this.handleHttpError(error);
+          return throwError(error);
+        }),
+      );
+  }
+
+  getItems(itemIds: number[]): Observable<Item[]> {
+    const itemRequests: Observable<Item>[] = itemIds.map(itemId => this.getItem(itemId));
+    return forkJoin(itemRequests);
+  }
+
+
 
   getTopStories(): Observable<number[]> {
     const topStoriesUrl = `${this.apiUrl}/topstories.json?print=pretty`;
