@@ -1,7 +1,7 @@
 import { Injectable, HttpService, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { Observable, throwError,forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Item, User, ChangedItemsAndProfiles } from '../hackerNewsApi/hackerNewsApi.dto'; 
+import { Item, User, ChangedItemsAndProfiles } from '../hackerNewsApiModule/hackerNewsApi.dto'; 
 
 @Injectable()
 export class HackerNewsAdapter {
@@ -70,6 +70,7 @@ export class HackerNewsAdapter {
 
 
   getTopStories(): Observable<number[]> {
+    console.log("getTopStories");
     const topStoriesUrl = `${this.apiUrl}/topstories.json?print=pretty`;
     return this.httpService.get(topStoriesUrl).pipe(
       map(response => response.data),

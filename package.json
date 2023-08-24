@@ -38,7 +38,6 @@
     "@types/passport-local": "^1.0.34",
     "aws-sdk": "^2.1223.0",
     "axios": "^0.27.2",
-    "cache-manager": "^5.2.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.5",
@@ -65,9 +64,9 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "role-acl": "^4.5.4",
-    "rxjs": "^6.3.3",
     "swagger-ui-express": "^4.5.0",
-    "typeorm": "^0.3.7"
+    "typeorm": "^0.3.7",
+    "cache-manager": "5.2.3"
   },
   "devDependencies": {
     "@nestjs/testing": "^7.0.0",
