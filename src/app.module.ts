@@ -7,6 +7,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
 import { MailModule } from './mail/mail.module';
+import {HackerNewsApiModule} from './hackerNewsApi/hackerNewsApi.module'
 
 
 @Module({
@@ -35,6 +36,7 @@ import { MailModule } from './mail/mail.module';
     OrganizationModule,
     UserModule,
     AuthenticationModule,
+    HackerNewsApiModule
   ]
 })  
 
