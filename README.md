@@ -80,6 +80,6 @@ $ db.createUser({
   1:npm i --force
   2:npm install tslib
   than 
-  3:npm i cache-manage --force
+  3:npm install cache-manager@4.0.0 --save  //because of the version issues
   4:npm run start:dev
 

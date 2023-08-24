@@ -8,8 +8,9 @@ import { HackerNewsApiModule } from './hackerNewsApi/hackerNewsApi.module';
 @Module({
   imports: [
     CacheModule.register({
-      ttl: 900, // 15 minutes
+      store: 'memory',
       max: 100,
+      ttl: 900,
     }),
     ConfigModule.forRoot({
       isGlobal: true, // no need to import into other modules
