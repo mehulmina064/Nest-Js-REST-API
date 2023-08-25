@@ -1,8 +1,9 @@
 import { Controller, Get, Param, ParseIntPipe,CacheInterceptor, UseInterceptors,CacheTTL,CacheKey,CACHE_MANAGER,Inject, InternalServerErrorException } from '@nestjs/common';
 import { HackerNewsAdapter } from '../external/HackerNewsAdapter';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, from, of } from 'rxjs';
 import { Item, User, ChangedItemsAndProfiles, Story, Comment } from './hackerNewsApi.dto';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 class GetItemParams {
   @IsNotEmpty()
@@ -23,31 +24,60 @@ export class HackerApiController {
      @Inject(CACHE_MANAGER) private readonly cacheManager ) {}
 
 
-     @Get('top-stories-data')
-     @CacheKey('top-stories-data') 
-     @CacheTTL(900) 
-     async getTopStoriesData(): Promise<Story[]> {
+  @Get('top-stories-with-user-data')
+  @CacheKey('top-stories-with-user-data') 
+  @CacheTTL(900) 
+  async getTopStoriesDataWithUserData(): Promise<Story[]> {
+    try {
+      return this.hackerNewsAdapter.getTopStories().pipe(
+        switchMap(ids => {
+          const storyObservables: Observable<Story>[] = ids.map(id =>
+            from(this.hackerNewsAdapter.getItem(id)).pipe(
+              switchMap(item => 
+                from(this.hackerNewsAdapter.getUser(item.by)).pipe(
+                  map(user => new Story(item, user))
+                )
+              )
+            )
+          );
+          return forkJoin(storyObservables);
+        })
+      ).toPromise();
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+
+    @Get('top-stories-data')
+    @CacheKey('top-stories-data') 
+    @CacheTTL(900) 
+    async getTopStoriesData(): Promise<Story[]> {
       try {
-        const idsObservable: Observable<number[]> = this.hackerNewsAdapter.getTopStories();
-        const ids: number[] = await idsObservable.toPromise();
-        // ids.length=100; // for top 100
-        const storyObservables: Observable<Story>[] = ids.map(async (id) => {
-          const itemObservable: Observable<Item> = await this.hackerNewsAdapter.getItem(id);
-          const item: Item = await itemObservable.toPromise();
-          // if want created by user details
-          // const userObservable: Observable<User> = await this.hackerNewsAdapter.getUser(item.by);
-          // const user: User = await userObservable.toPromise();
-          // return new Story(item,user);
-          //otherwise by default
-          return new Story(item);
-        }); 
-  
-        return await forkJoin(storyObservables).toPromise();
+        return this.hackerNewsAdapter.getTopStories().pipe(
+          switchMap(ids => {
+            const storyObservables: Observable<Story>[] = ids.map(id =>
+              from(this.hackerNewsAdapter.getItem(id)).pipe(
+                map(item => new Story(item))
+              )
+            );
+            return forkJoin(storyObservables);
+          })
+        ).toPromise();
       } catch (error) {
-        // Handle errors here
         console.error(error);
         throw new InternalServerErrorException(error);
       }
+    }
+
+    @Get('past-stories-with-user-data')
+    @CacheKey('top-stories-data-user-data')
+    @CacheTTL(900)
+    async getPastStoriesDataWithUserData(): Promise<Observable<number[]>> { 
+      const key = 'top-stories-data-user-data';
+      let result= this.cacheManager.get(key, { ttl: 900, max: 100 }); // Return cached data
+      return result.length?result:this.getTopStoriesDataWithUserData()
     }
 
 
@@ -59,28 +89,58 @@ export class HackerApiController {
       let result= this.cacheManager.get(key, { ttl: 900, max: 100 }); // Return cached data
       return result.length?result:this.getTopStoriesData()
     }
+
   
 
     @Get('comments-data/:id')
     async getCommentsData(@Param('id', ParseIntPipe) id: number): Promise<Comment[]> {
+    try {
       const item = await this.hackerNewsAdapter.getItem(id).toPromise();
       if (item.kids && item.kids.length > 0) {
-        const commentObservables: Observable<Comment>[] = item.kids.map(async (id) => {
-          const itemObservable: Observable<Item> = await this.hackerNewsAdapter.getItem(id);
-          const item: Item = await itemObservable.toPromise();
-          // if want created by user details
-          // const userObservable: Observable<User> = await this.hackerNewsAdapter.getUser(item.by);
-          // const user: User = await userObservable.toPromise();
-          // return new Comment(item,user);
-          //otherwise by default
-          return new Comment(item);
-        }); 
+        const commentObservables: Observable<Comment>[] = item.kids.map(kidId =>
+          from(this.hackerNewsAdapter.getItem(kidId)).pipe(
+            catchError(() => of(null)), // Ignore errors if comment item not found
+            map(commentItem => new Comment(commentItem))
+          )
+        );
 
-        return await forkJoin(commentObservables).toPromise();
+        return forkJoin(commentObservables).toPromise();
       } else {
         return [];
       }
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(error);
     }
+  }
+
+
+    @Get('comments-with-user-data/:id')
+    async getCommentsDataWithUserData(@Param('id', ParseIntPipe) id: number): Promise<Comment[]> {
+      try {
+        const item = await this.hackerNewsAdapter.getItem(id).toPromise();
+        if (item.kids && item.kids.length > 0) {
+          const commentObservables: Observable<Comment>[] = item.kids.map(kidId =>
+            from(this.hackerNewsAdapter.getItem(kidId)).pipe(
+              switchMap(commentItem =>
+                from(this.hackerNewsAdapter.getUser(commentItem.by)).pipe(
+                  catchError(() => of(null)), // Ignore errors if user not found
+                  map(user => new Comment(commentItem, user))
+                )
+              )
+            )
+          );
+  
+          return forkJoin(commentObservables).toPromise();
+        } else {
+          return [];
+        }
+      } catch (error) {
+        console.error(error);
+        throw new InternalServerErrorException(error);
+      }
+    }
+    
 
 
 
