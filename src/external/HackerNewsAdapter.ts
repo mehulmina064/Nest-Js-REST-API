@@ -17,7 +17,8 @@ export class HackerNewsAdapter {
     }
   }
 
-  getItem(itemId: number): Observable<Item> {
+   getItem(itemId: number): Observable<Item> {
+    console.log("getMaxItemId",itemId);
     const itemUrl = `${this.apiUrl}/item/${itemId}.json?print=pretty`;
     return this.httpService.get(itemUrl).pipe(
       map(response => response.data),
@@ -28,7 +29,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getUser(username: string): Observable<User> {
+   getUser(username: string): Observable<User> {
     const userUrl = `${this.apiUrl}/user/${username}.json?print=pretty`;
     return this.httpService.get(userUrl).pipe(
       map(response => response.data),
@@ -51,7 +52,7 @@ export class HackerNewsAdapter {
   }
 
   //need to check
-  getItemsDirectApi(itemIds: number[]): Observable<Item[]> {
+   getItemsDirectApi(itemIds: number[]): Observable<Item[]> {
     const itemUrls = itemIds.map(itemId => `${this.apiUrl}/item/${itemId}.json`);
     return this.httpService.get(itemUrls.join(',')).pipe(
         map(response => response.data),
@@ -62,14 +63,14 @@ export class HackerNewsAdapter {
       );
   }
 
-  getItems(itemIds: number[]): Observable<Item[]> {
+   getItems(itemIds: number[]): Observable<Item[]> {
     const itemRequests: Observable<Item>[] = itemIds.map(itemId => this.getItem(itemId));
     return forkJoin(itemRequests);
   }
 
 
 
-  getTopStories(): Observable<number[]> {
+   getTopStories(): Observable<number[]> {
     console.log("getTopStories");
     const topStoriesUrl = `${this.apiUrl}/topstories.json?print=pretty`;
     return this.httpService.get(topStoriesUrl).pipe(
@@ -81,7 +82,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getNewStories(): Observable<number[]> {
+   getNewStories(): Observable<number[]> {
     const newStoriesUrl = `${this.apiUrl}/newstories.json?print=pretty`;
     return this.httpService.get(newStoriesUrl).pipe(
       map(response => response.data),
@@ -92,7 +93,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getBestStories(): Observable<number[]> {
+   getBestStories(): Observable<number[]> {
     const bestStoriesUrl = `${this.apiUrl}/beststories.json?print=pretty`;
     return this.httpService.get(bestStoriesUrl).pipe(
       map(response => response.data),
@@ -103,7 +104,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getAskStories(): Observable<number[]> {
+    getAskStories(): Observable<number[]> {
     const askStoriesUrl = `${this.apiUrl}/askstories.json?print=pretty`;
     return this.httpService.get(askStoriesUrl).pipe(
       map(response => response.data),
@@ -114,7 +115,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getShowStories(): Observable<number[]> {
+   getShowStories(): Observable<number[]> {
     const showStoriesUrl = `${this.apiUrl}/showstories.json?print=pretty`;
     return this.httpService.get(showStoriesUrl).pipe(
       map(response => response.data),
@@ -125,7 +126,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getJobStories(): Observable<number[]> {
+   getJobStories(): Observable<number[]> {
     const jobStoriesUrl = `${this.apiUrl}/jobstories.json?print=pretty`;
     return this.httpService.get(jobStoriesUrl).pipe(
       map(response => response.data),
@@ -136,7 +137,7 @@ export class HackerNewsAdapter {
     );
   }
 
-  getChangedItemsAndProfiles(): Observable<ChangedItemsAndProfiles> {
+   getChangedItemsAndProfiles(): Observable<ChangedItemsAndProfiles> {
     const updatesUrl = `${this.apiUrl}/updates.json?print=pretty`;
     return this.httpService.get(updatesUrl).pipe(
       map(response => response.data),
