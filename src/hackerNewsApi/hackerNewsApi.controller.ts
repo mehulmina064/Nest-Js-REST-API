@@ -30,7 +30,7 @@ export class HackerApiController {
   async getTopStoriesDataWithUserData(): Promise<Story[]> {
     try {
       return this.hackerNewsAdapter.getTopStories().pipe(
-        switchMap(ids => {
+        switchMap(async ids => {
           const storyObservables: Observable<Story>[] = ids.map(id =>
             from(this.hackerNewsAdapter.getItem(id)).pipe(
               switchMap(item => 
@@ -40,7 +40,8 @@ export class HackerApiController {
               )
             )
           );
-          return forkJoin(storyObservables);
+          return (await forkJoin(storyObservables).toPromise()).filter(Item =>Item.deleted==false);
+
         })
       ).toPromise();
     } catch (error) {
@@ -56,13 +57,15 @@ export class HackerApiController {
     async getTopStoriesData(): Promise<Story[]> {
       try {
         return this.hackerNewsAdapter.getTopStories().pipe(
-          switchMap(ids => {
+          switchMap(async ids => {
             const storyObservables: Observable<Story>[] = ids.map(id =>
               from(this.hackerNewsAdapter.getItem(id)).pipe(
-                map(item => new Story(item))
+                map(item => new Story(item)),
               )
             );
-            return forkJoin(storyObservables);
+            // return forkJoin(storyObservables);
+            return (await forkJoin(storyObservables).toPromise()).filter(Item =>Item.deleted==false);
+
           })
         ).toPromise();
       } catch (error) {
@@ -104,7 +107,7 @@ export class HackerApiController {
           )
         );
 
-        return forkJoin(commentObservables).toPromise();
+        return (await forkJoin(commentObservables).toPromise()).filter(commentItem =>commentItem.deleted==false);
       } else {
         return [];
       }
@@ -113,6 +116,7 @@ export class HackerApiController {
       throw new InternalServerErrorException(error);
     }
   }
+  
 
 
     @Get('comments-with-user-data/:id')
@@ -125,7 +129,7 @@ export class HackerApiController {
               switchMap(commentItem =>
                 from(this.hackerNewsAdapter.getUser(commentItem.by)).pipe(
                   catchError(() => of(null)), // Ignore errors if user not found
-                  map(user => new Comment(commentItem, user))
+                  map(user => new Comment(commentItem))
                 )
               )
             )

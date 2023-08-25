@@ -49,6 +49,7 @@ export class Story {
       this.totalComments = itemData.descendants;
       this.pollId = itemData.poll;
       this.dead=itemData.dead;
+      this.deleted=false;
     }
   
   }
@@ -74,10 +75,10 @@ export class Comment {
   // parentComment?: Comment;  
   // parentPoll?: Poll;  
   constructor(itemData: Item, user?: User) {
+    console.log(itemData,user)
     this.deleted=itemData.deleted?itemData.deleted:false;
     this.id = itemData.id;
     if(this.deleted==true){
-      this.deleted=true;
       this.parentId=itemData.parent;
       this.time=new Date(itemData.time * 1000);
       this.type=itemData.type;
@@ -91,6 +92,7 @@ export class Comment {
       this.commentsIds = itemData.kids;
       this.totalComments = itemData.kids?itemData.kids.length:0;
       this.parentId=itemData.parent;
+      this.deleted=false;
     }
  
   }
