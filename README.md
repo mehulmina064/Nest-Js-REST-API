@@ -1,3 +1,15 @@
+Using the apis of Hacker News API
+Link of Docs-https://github.com/HackerNews/API
+
+#Implemted
+top stories
+past stories
+story comments
+
+#Working on it 
+Deciding yet
+
+
 ## Installation
 
 ```bash
