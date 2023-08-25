@@ -3,7 +3,7 @@ import { HackerNewsAdapter } from '../external/HackerNewsAdapter';
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { Item, User, ChangedItemsAndProfiles, Story, Comment } from './hackerNewsApi.dto';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 class GetItemParams {
   @IsNotEmpty()

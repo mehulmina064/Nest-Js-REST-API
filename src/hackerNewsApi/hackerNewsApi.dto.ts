@@ -30,14 +30,14 @@ export class Story {
 
   
   constructor(itemData: Item, user?: User) {
-    if(itemData.deleted=true){
-      this.id = itemData.id;
+    this.deleted=itemData.deleted?itemData.deleted:false;
+    this.id = itemData.id;
+    if(this.deleted==true){
       this.deleted=true;
       this.time=new Date(itemData.time * 1000);
       this.type=itemData.type;
     }
     else{
-      this.id = itemData.id;
       this.createdBy = user ? new UserData(user) : new UserData(itemData.by);
       this.time = new Date(itemData.time * 1000);
       this.type = itemData.type;
@@ -49,7 +49,6 @@ export class Story {
       this.totalComments = itemData.descendants;
       this.pollId = itemData.poll;
       this.dead=itemData.dead;
-      this.deleted=itemData.deleted;
     }
   
   }
@@ -75,10 +74,9 @@ export class Comment {
   // parentComment?: Comment;  
   // parentPoll?: Poll;  
   constructor(itemData: Item, user?: User) {
-    console.log("construct",itemData);
+    this.deleted=itemData.deleted?itemData.deleted:false;
     this.id = itemData.id;
-    if(itemData.deleted=true){
-      this.id = itemData.id;
+    if(this.deleted==true){
       this.deleted=true;
       this.parentId=itemData.parent;
       this.time=new Date(itemData.time * 1000);
