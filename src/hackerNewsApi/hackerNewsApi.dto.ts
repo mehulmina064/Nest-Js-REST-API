@@ -30,19 +30,28 @@ export class Story {
 
   
   constructor(itemData: Item, user?: User) {
-    this.id = itemData.id;
-    this.createdBy = user ? new UserData(user) : new UserData(itemData.by);
-    this.time = new Date(itemData.time * 1000);
-    this.type = itemData.type;
-    this.votes = itemData.score;
-    this.title = itemData.title;
-    this.url = itemData.url;
-    this.commentsIds = itemData.kids;
-    this.relatedPolloptIds = itemData.parts;
-    this.totalComments = itemData.descendants;
-    this.pollId = itemData.poll;
-    this.dead=itemData.dead;
-    this.deleted=itemData.deleted;
+    if(itemData.deleted=true){
+      this.id = itemData.id;
+      this.deleted=true;
+      this.time=new Date(itemData.time * 1000);
+      this.type=itemData.type;
+    }
+    else{
+      this.id = itemData.id;
+      this.createdBy = user ? new UserData(user) : new UserData(itemData.by);
+      this.time = new Date(itemData.time * 1000);
+      this.type = itemData.type;
+      this.votes = itemData.score;
+      this.title = itemData.title;
+      this.url = itemData.url;
+      this.commentsIds = itemData.kids;
+      this.relatedPolloptIds = itemData.parts;
+      this.totalComments = itemData.descendants;
+      this.pollId = itemData.poll;
+      this.dead=itemData.dead;
+      this.deleted=itemData.deleted;
+    }
+  
   }
   
 }
@@ -66,16 +75,26 @@ export class Comment {
   // parentComment?: Comment;  
   // parentPoll?: Poll;  
   constructor(itemData: Item, user?: User) {
+    console.log("construct",itemData);
     this.id = itemData.id;
-    this.createdBy = user ? new UserData(user) : new UserData(itemData.by);
-    this.time = new Date(itemData.time * 1000);
-    this.type = itemData.type;
-    this.dead=itemData.dead;
-    this.text=itemData.text;
-    this.deleted=itemData.deleted;
-    this.commentsIds = itemData.kids;
-    this.totalComments = itemData.kids?itemData.kids.length:0;
-    this.parentId=itemData.parent;
+    if(itemData.deleted=true){
+      this.id = itemData.id;
+      this.deleted=true;
+      this.parentId=itemData.parent;
+      this.time=new Date(itemData.time * 1000);
+      this.type=itemData.type;
+    }else{
+      this.createdBy = user ? new UserData(user) : new UserData(itemData.by);
+      this.time = new Date(itemData.time * 1000);
+      this.type = itemData.type;
+      this.dead=itemData.dead;
+      this.text=itemData.text;
+      this.deleted=itemData.deleted;
+      this.commentsIds = itemData.kids;
+      this.totalComments = itemData.kids?itemData.kids.length:0;
+      this.parentId=itemData.parent;
+    }
+ 
   }
 }
 
